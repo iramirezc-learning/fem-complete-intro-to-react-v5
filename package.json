@@ -1,0 +1,27 @@
+{
+  "name": "fem-complete-intro-to-react-v5",
+  "version": "1.0.0",
+  "description": "My personal repo for the course [Complete Intro to React v5](https://frontendmasters.com/courses/complete-react-v5/) hosted by [Front End Masters](https://frontendmasters.com/).",
+  "main": "index.js",
+  "scripts": {
+    "format": "prettier --write \"src/**/*.{js,jsx}\"",
+    "lint": "eslint \"src/**/*.{js, jsx}\" --quiet",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/iramirezc/fem-complete-intro-to-react-v5.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/iramirezc/fem-complete-intro-to-react-v5/issues"
+  },
+  "homepage": "https://github.com/iramirezc/fem-complete-intro-to-react-v5#readme",
+  "devDependencies": {
+    "eslint": "^7.18.0",
+    "eslint-config-prettier": "^7.2.0",
+    "prettier": "^2.2.1"
+  }
+}
