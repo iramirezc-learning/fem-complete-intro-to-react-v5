@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "parcel src/index.html",
+    "dev:mock": "cross-env PET_MOCK=mock && npm run dev",
     "format": "prettier --write \"src/**/*.{js,jsx}\"",
     "lint": "eslint \"src/**/*.{js, jsx}\" --quiet",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -22,6 +23,7 @@
   "homepage": "https://github.com/iramirezc/fem-complete-intro-to-react-v5#readme",
   "devDependencies": {
     "babel-eslint": "^10.1.0",
+    "cross-env": "^7.0.3",
     "eslint": "^7.18.0",
     "eslint-config-prettier": "^7.2.0",
     "eslint-plugin-import": "^2.22.1",
