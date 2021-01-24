@@ -1,12 +1,19 @@
 import React from "react";
 import PetApi from "@frontendmasters/pet";
+import Carousel from "./Carousel";
 
 class Details extends React.Component {
   state = { loading: true };
 
   componentDidMount() {
-    PetApi.animal(this.props.id)
-      .then(({ animal: pet }) => {
+    PetApi.animal(+this.props.id)
+      .then((apiResult) => {
+        if (apiResult instanceof Error) {
+          throw new Error(apiResult);
+        }
+
+        const { animal: pet } = apiResult;
+
         this.setState({
           name: pet.name,
           animal: pet.type,
@@ -21,7 +28,15 @@ class Details extends React.Component {
   }
 
   render() {
-    const { loading, name, animal, breed, location, description } = this.state;
+    const {
+      loading,
+      name,
+      animal,
+      location,
+      description,
+      media,
+      breed,
+    } = this.state;
 
     if (loading) {
       return <h1>Loading...</h1>;
@@ -29,6 +44,7 @@ class Details extends React.Component {
 
     return (
       <div className="details">
+        <Carousel media={media} />
         <div>
           <h1>{name}</h1>
           <h2>{`${animal} - ${breed} - ${location}`}</h2>
