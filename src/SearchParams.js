@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import pet, { ANIMALS } from "@frontendmasters/pet";
+import petApi, { ANIMALS } from "@frontendmasters/pet";
+import Results from "./Results";
 import useDropdown from "./useDropdown";
 
 const SearchParams = () => {
@@ -7,6 +8,7 @@ const SearchParams = () => {
   const [breeds, setBreeds] = useState([]);
   const [animal, AnimalDropdown] = useDropdown("Animal", "dog", ANIMALS);
   const [breed, BreedDropdown, setBreed] = useDropdown("Breed", "", breeds);
+  const [pets, setPets] = useState([]);
 
   useEffect(() => {
     setBreeds([]);
@@ -14,7 +16,7 @@ const SearchParams = () => {
 
     if (!animal) return;
 
-    pet
+    petApi
       .breeds(animal)
       .then(({ breeds: breedsFromApi = [] }) => {
         const breedsNames = breedsFromApi.map(({ name }) => name);
@@ -22,11 +24,26 @@ const SearchParams = () => {
         setBreeds(breedsNames);
       })
       .catch(console.error);
-  }, [animal]);
+  }, [animal, setBreeds, setBreed]);
+
+  async function fetchPets() {
+    const { animals: petsFromApi } = await petApi.animals({
+      location,
+      breed,
+      type: animal,
+    });
+
+    setPets(petsFromApi || []);
+  }
 
   return (
     <div className="search-params">
-      <form>
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          fetchPets();
+        }}
+      >
         <label htmlFor="location">
           Location
           <input
@@ -41,6 +58,7 @@ const SearchParams = () => {
         <BreedDropdown />
         <button type="submit">Submit</button>
       </form>
+      <Results pets={pets} />
     </div>
   );
 };
