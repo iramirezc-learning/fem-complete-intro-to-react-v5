@@ -1,11 +1,13 @@
 import React from "react";
+import { navigate } from "@reach/router";
 import PetApi from "@frontendmasters/pet";
 import Carousel from "./Carousel";
 import ErrorBoundary from "./ErrorBoundary";
 import ThemeContext from "./ThemeContext";
+import Modal from "./Modal";
 
 class Details extends React.Component {
-  state = { loading: true };
+  state = { loading: true, showModal: false };
 
   componentDidMount() {
     PetApi.animal(+this.props.id)
@@ -23,6 +25,7 @@ class Details extends React.Component {
           description: pet.description,
           media: pet.photos,
           breed: pet.breeds.primary,
+          url: pet.url,
           loading: false,
         });
       })
@@ -37,15 +40,24 @@ class Details extends React.Component {
     }
   }
 
+  adopt = () => {
+    navigate(this.state.url);
+  };
+
+  toggleModal = () => {
+    this.setState({ showModal: !this.state.showModal });
+  };
+
   render() {
     const {
-      loading,
       name,
       animal,
       location,
       description,
       media,
       breed,
+      loading,
+      showModal,
     } = this.state;
 
     if (loading) {
@@ -59,9 +71,24 @@ class Details extends React.Component {
           <h1>{name}</h1>
           <h2>{`${animal} - ${breed} - ${location}`}</h2>
           <ThemeContext.Consumer>
-            {([theme]) => <button style={theme.button}>Adopt {name}</button>}
+            {([theme]) => (
+              <button style={theme.button} onClick={this.toggleModal}>
+                Adopt {name}
+              </button>
+            )}
           </ThemeContext.Consumer>
           <p>{description}</p>
+          {showModal && (
+            <Modal>
+              <div>
+                <h1>Would you like to adopt {name}?</h1>
+                <div className="buttons">
+                  <button onClick={this.adopt}>Yes</button>
+                  <button onClick={this.toggleModal}>No</button>
+                </div>
+              </div>
+            </Modal>
+          )}
         </div>
       </div>
     );
