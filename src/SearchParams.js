@@ -1,7 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import PetApi, { ANIMALS } from "@frontendmasters/pet";
 import Results from "./Results";
 import useDropdown from "./useDropdown";
+import ThemeContext from "./ThemeContext";
+import ThemeDropdown from "./ThemeDropdown";
 
 const SearchParams = () => {
   const [location, setLocation] = useState("Seattle, WA");
@@ -9,6 +11,7 @@ const SearchParams = () => {
   const [animal, AnimalDropdown] = useDropdown("Animal", "dog", ANIMALS);
   const [breed, BreedDropdown, setBreed] = useDropdown("Breed", "", breeds);
   const [pets, setPets] = useState([]);
+  const [theme, setTheme] = useContext(ThemeContext);
 
   useEffect(() => {
     setBreeds([]);
@@ -43,6 +46,7 @@ const SearchParams = () => {
           fetchPets();
         }}
       >
+        <ThemeDropdown theme={theme} onChange={setTheme} />
         <label htmlFor="location">
           Location
           <input
@@ -55,7 +59,9 @@ const SearchParams = () => {
         </label>
         <AnimalDropdown />
         <BreedDropdown />
-        <button type="submit">Submit</button>
+        <button type="submit" style={theme.button}>
+          Submit
+        </button>
       </form>
       <Results pets={pets} />
     </div>
