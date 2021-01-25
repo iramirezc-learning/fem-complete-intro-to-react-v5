@@ -1,6 +1,7 @@
 import React from "react";
 import PetApi from "@frontendmasters/pet";
 import Carousel from "./Carousel";
+import ErrorBoundary from "./ErrorBoundary";
 
 class Details extends React.Component {
   state = { loading: true };
@@ -9,7 +10,7 @@ class Details extends React.Component {
     PetApi.animal(+this.props.id)
       .then((apiResult) => {
         if (apiResult instanceof Error) {
-          throw new Error(apiResult);
+          throw apiResult;
         }
 
         const { animal: pet } = apiResult;
@@ -24,7 +25,15 @@ class Details extends React.Component {
           loading: false,
         });
       })
-      .catch(console.error);
+      .catch((err) => {
+        this.setState({ error: err });
+      });
+  }
+
+  componentDidUpdate() {
+    if (this.state.error) {
+      throw this.state.error; // propagate the error for ErrorBoundary
+    }
   }
 
   render() {
@@ -56,4 +65,12 @@ class Details extends React.Component {
   }
 }
 
-export default Details;
+const DetailsWithErrorBoundary = (props) => {
+  return (
+    <ErrorBoundary>
+      <Details {...props} />
+    </ErrorBoundary>
+  );
+};
+
+export default DetailsWithErrorBoundary;

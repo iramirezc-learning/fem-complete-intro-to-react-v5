@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import petApi, { ANIMALS } from "@frontendmasters/pet";
+import PetApi, { ANIMALS } from "@frontendmasters/pet";
 import Results from "./Results";
 import useDropdown from "./useDropdown";
 
@@ -16,8 +16,7 @@ const SearchParams = () => {
 
     if (!animal) return;
 
-    petApi
-      .breeds(animal)
+    PetApi.breeds(animal)
       .then(({ breeds: breedsFromApi = [] }) => {
         const breedsNames = breedsFromApi.map(({ name }) => name);
 
@@ -27,7 +26,7 @@ const SearchParams = () => {
   }, [animal, setBreeds, setBreed]);
 
   async function fetchPets() {
-    const { animals: petsFromApi } = await petApi.animals({
+    const { animals: petsFromApi } = await PetApi.animals({
       location,
       breed,
       type: animal,
