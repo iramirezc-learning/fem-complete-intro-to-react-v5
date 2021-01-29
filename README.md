@@ -14,7 +14,7 @@ Course duration
 
 Published
 
-> Jan 4, 2019
+> June 4, 2019
 
 ## My Stats
 
